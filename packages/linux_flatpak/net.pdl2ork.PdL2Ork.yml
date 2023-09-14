@@ -1,6 +1,6 @@
 id: net.pdl2ork.PdL2Ork
 runtime: org.freedesktop.Platform
-runtime-version: '19.08'
+runtime-version: '22.08'
 sdk: org.freedesktop.Sdk
 default-branch: stable
 command: pd-wrapper.sh
@@ -22,7 +22,7 @@ modules:
   sources:
   - type: git
     url: https://github.com/pd-l2ork/pd-l2ork/
-    tag: 20230820
+    tag: '20230820'
     commit: 98415e29cb755ef541a5e2d319b713b0137231a5
   - type: patch
     path: patch/build-api.patch
@@ -68,7 +68,7 @@ modules:
   sources:
   - type: git
     url: https://github.com/pd-l2ork/pd-l2ork/
-    tag: 20230820
+    tag: '20230820'
     commit: 98415e29cb755ef541a5e2d319b713b0137231a5
 
 - name: pd-abstractions
@@ -79,7 +79,7 @@ modules:
   sources:
   - type: git
     url: https://github.com/pd-l2ork/pd-l2ork/
-    tag: 20230820
+    tag: '20230820'
     commit: 98415e29cb755ef541a5e2d319b713b0137231a5
 
 - name: pd-l2ork-integration
@@ -106,7 +106,7 @@ modules:
   sources:
   - type: git
     url: https://github.com/pd-l2ork/pd-l2ork/
-    tag: 20230820
+    tag: '20230820'
     commit: 98415e29cb755ef541a5e2d319b713b0137231a5
   - type: file
     # Using an binary x86_64 build of nw.js makes me sad. There are ARM packages
