@@ -121,7 +121,7 @@ darwin_app_wrapper: Info.plist
 # nwjs.app
 	rm -rf "$(BUILD_BASE)"
 	install -d "$(BUILD_BASE)"
-	rsync -ax $(cvs_root_dir)/pd/nw/nw/nwjs.app/ $(BUILD_BASE)/$(PD_APP_NAME).app/
+# rsync -ax $(cvs_root_dir)/pd/nw/nw/nwjs.app/ $(BUILD_BASE)/$(PD_APP_NAME).app/
 # set up app wrapper
 	install -d "$(PD_APP_CONTENTS)/Resources/app.nw"
 	# The nw.js app has its own Info.plist
