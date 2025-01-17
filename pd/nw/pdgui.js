@@ -4939,8 +4939,11 @@ function text_to_tspans(cid, svg_text, text, type) {
                 //post("new newtext=<"+newtext+">");
             }
         }
-        if(newtext == null)
+        if(newtext == null || newtext?.length == 0) {
+            if (span === '')
+                span = ' ';
             newtext = span;
+        }
 
         if (is_comment) {
             // tags can be escaped with <!tag>, show these as literals
