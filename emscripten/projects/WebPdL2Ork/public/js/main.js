@@ -5488,7 +5488,7 @@ async function openPatch(content, filename, patchURL) {
                             inputListeners.push({
                                 onKeyDown: (e) => {
                                     if(e.repeat === false || data.repeat === true)
-                                        gui_send('Float',data.send, e.key.length == 1 ? e.key.charCodeAt(0) : e.keyCode);
+                                        gui_send('Float',data.send, e.key.length == 1 ? e.key.charCodeAt(0) : (e.keyCode == 27 ? 27 : (e.keyCode == 13 ? 10 : 0)));
                                 },
                                 priority: 5
                             })
@@ -5502,7 +5502,7 @@ async function openPatch(content, filename, patchURL) {
                             inputListeners.push({
                                 onKeyUp: (e) => {
                                     if(e.repeat === false || data.repeat === true)
-                                        gui_send('Float',data.send, e.key.length == 1 ? e.key.charCodeAt(0) : e.keyCode);
+                                        gui_send('Float',data.send, e.key.length == 1 ? e.key.charCodeAt(0) : (e.keyCode == 27 ? 27 : (e.keyCode == 13 ? 10 : 0)));
                                 },
                                 priority: 5
                             })
