@@ -138,33 +138,6 @@ let known_objects = [
 ];
 //END CONSTANTS
 
-// ==========================================
-// INTEGRATED WEBPD CANVAS FOCUS ENGINE
-// ==========================================
-(function initWebPdCanvasFocusEngine() {
-    function bindCanvas() {
-        const webPdCanvas = document.querySelector('canvas') || document.getElementById('canvas');
-        if (webPdCanvas) {
-            webPdCanvas.setAttribute('tabindex', '0');
-            webPdCanvas.style.outline = 'none';
-
-            webPdCanvas.addEventListener('mousedown', function() {
-                webPdCanvas.focus();
-            });
-            return true;
-        }
-        return false;
-    }
-
-    if (!bindCanvas()) {
-        const checkInterval = setInterval(function() {
-            if (bindCanvas()) clearInterval(checkInterval);
-        }, 100);
-        setTimeout(() => clearInterval(checkInterval), 10000);
-    }
-})();
-// ==========================================
-
 // NETWORKING SUPPORT
 // Here we intercept all websocket connections and send them to the backend for proxying
 window.WebSocket = function (host, ...arguments) {
