@@ -3733,9 +3733,6 @@ function gui_nbx_onmousedown(data, e, id) {
             // Only proceed if the user HAS NOT selected a new item during the 3000ms delay
             if (document.activeElement === originalActiveElement && originalActiveElement) {
                 
-                // Strip focus from the idle number box element natively
-                originalActiveElement.blur();
-                
                 // Re-route back through your updated focus engine safely
                 setKeyboardFocus(null);
             }
@@ -3801,9 +3798,6 @@ function gui_nbx_keydown(data, e) {
         data.focusTimeout = setTimeout(function() {
             // Only proceed if the user HAS NOT selected a new item during the 3000ms delay
             if (document.activeElement === originalActiveElement && originalActiveElement) {
-                
-                // Strip focus from the idle number box element natively
-                originalActiveElement.blur();
                 
                 // Re-route back through your updated focus engine safely
                 setKeyboardFocus(null);
@@ -3991,11 +3985,6 @@ window.onblur = () => {
 };
 
 function setKeyboardFocus(data, exclusive) {
-    // 1. NORMALIZATION
-    if (data === false || data === "null" || data === "") {
-        data = null;
-    }
-
     // --- ORIGINAL CORE KEY DEFLATION ENGINE ---
     for(let key in keyDown) {
         if(exclusive)
@@ -4011,18 +4000,22 @@ function setKeyboardFocus(data, exclusive) {
     // --- SAFELY PRESERVE BROWSER FOCUS SEAMLESSLY ---
     const trigger = document.getElementById('keyboardTrigger');
     if (trigger) {
-        // NEVER call trigger.blur() inside an asynchronous loop block.
-        // We force the element to keep its browser focus state 100% of the time,
-        // preventing Chrome's background timer focus security block.
+        // Force the element to retain focus, keeping the browser bridge active
         trigger.focus(); 
     }
 
     // --- STATE ENGINE UPDATE ---
-    // WebPdL2Ork will check if keyboardFocus.data is null. If it is null,
-    // the system naturally knows to ignore object data inputs and route hotkeys globally.
     keyboardFocus.data = data;
     keyboardFocus.exclusive = exclusive;
-    keyboardFocus.current = true;
+    
+    // If data is exactly null, we flag current as false. 
+    // This instructs your main.js onKeyDown loop to instantly process 
+    // global canvas hotkeys without attempting to read sub-properties.
+    if (data === null) {
+        keyboardFocus.current = false;
+    } else {
+        keyboardFocus.current = true;
+    }
 }
 //function setKeyboardFocus(data, exclusive) {
 //    for(let key in keyDown) {
