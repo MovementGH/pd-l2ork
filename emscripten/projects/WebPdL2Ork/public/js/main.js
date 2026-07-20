@@ -3790,9 +3790,6 @@ function gui_nbx_keydown(data, e) {
             // Only proceed if the user HAS NOT selected a new item during the 3000ms delay
             if (document.activeElement === originalActiveElement && originalActiveElement) {
                 
-                // Strip focus from the idle number box element natively
-                originalActiveElement.blur();
-                
                 // Re-route back through your updated focus engine safely
                 setKeyboardFocus(null);
             }
