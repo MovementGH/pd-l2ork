@@ -138,33 +138,6 @@ let known_objects = [
 ];
 //END CONSTANTS
 
-// ==========================================
-// INTEGRATED WEBPD CANVAS FOCUS ENGINE
-// ==========================================
-(function initWebPdCanvasFocusEngine() {
-    function bindCanvas() {
-        const webPdCanvas = document.querySelector('canvas') || document.getElementById('canvas');
-        if (webPdCanvas) {
-            webPdCanvas.setAttribute('tabindex', '0');
-            webPdCanvas.style.outline = 'none';
-
-            webPdCanvas.addEventListener('mousedown', function() {
-                webPdCanvas.focus();
-            });
-            return true;
-        }
-        return false;
-    }
-
-    if (!bindCanvas()) {
-        const checkInterval = setInterval(function() {
-            if (bindCanvas()) clearInterval(checkInterval);
-        }, 100);
-        setTimeout(() => clearInterval(checkInterval), 10000);
-    }
-})();
-// ==========================================
-
 // NETWORKING SUPPORT
 // Here we intercept all websocket connections and send them to the backend for proxying
 window.WebSocket = function (host, ...arguments) {
@@ -4018,13 +3991,12 @@ window.onblur = () => {
 };
 
 function setKeyboardFocus(data, exclusive) {
-    // 1. SAFETY NORMALIZATION: Treat false, "null", or empty objects as null 
-    // to cleanly trigger canvas-level fallback tracking
+    // 1. NORMALIZATION
     if (data === false || data === "null" || data === "") {
         data = null;
     }
 
-    // --- ORIGINAL CORE ROUTING ENGINE ---
+    // --- ORIGINAL CORE KEY DEFLATION ENGINE ---
     for(let key in keyDown) {
         if(exclusive)
             if(keyDown[key])
@@ -4036,36 +4008,18 @@ function setKeyboardFocus(data, exclusive) {
     if(keyboardFocus?.data?.onLoseFocus)
         keyboardFocus.data.onLoseFocus(keyboardFocus.data);
 
-    // --- FOCUS FALLBACK REDIRECTION ---
-    if(data !== null) {
-        // An active element exists; route typing events through the standard trigger box
-        const trigger = document.getElementById('keyboardTrigger');
-        if (trigger) {
-            trigger.focus();
-        }
-    } else {
-        // Focus is being released. Blur the hidden trigger element...
-        const trigger = document.getElementById('keyboardTrigger');
-        if (trigger) {
-            trigger.blur();
-        }
-        
-        // ...and immediately ground the focus state onto WebPdL2Ork's main canvas
-        const webPdCanvas = document.querySelector('canvas') || document.getElementById('canvas');
-        if (webPdCanvas) {
-            // Make sure the canvas can structurally host keyboard focus
-            if (!webPdCanvas.hasAttribute('tabindex')) {
-                webPdCanvas.setAttribute('tabindex', '0');
-                webPdCanvas.style.outline = 'none'; // Clear out the browser's blue border
-            }
-            webPdCanvas.focus();
-        } else {
-            // Last-resort fallback to the document frame if the canvas isn't fully drawn yet
-            document.body.focus();
-        }
+    // --- SAFELY PRESERVE BROWSER FOCUS SEAMLESSLY ---
+    const trigger = document.getElementById('keyboardTrigger');
+    if (trigger) {
+        // NEVER call trigger.blur() inside an asynchronous loop block.
+        // We force the element to keep its browser focus state 100% of the time,
+        // preventing Chrome's background timer focus security block.
+        trigger.focus(); 
     }
 
-    // --- ORIGINAL STATE PRESERVATION ---
+    // --- STATE ENGINE UPDATE ---
+    // WebPdL2Ork will check if keyboardFocus.data is null. If it is null,
+    // the system naturally knows to ignore object data inputs and route hotkeys globally.
     keyboardFocus.data = data;
     keyboardFocus.exclusive = exclusive;
     keyboardFocus.current = true;
